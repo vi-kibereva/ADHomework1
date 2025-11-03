@@ -52,12 +52,12 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
 
     std::vector<int> sizes = {100, 1000, 10000, 100000};
-    const std::string sourceFilename = "students.csv";
+    const std::string sourceFilename = "../students.csv";
     std::ofstream resultsFile;
-    resultsFile.open("benchmark_results.csv");
+    resultsFile.open("../benchmark_results.csv");
     resultsFile << "Size,Solution,Operations\n";
     std::ofstream memoryFile;
-    memoryFile.open("memory_results.csv");
+    memoryFile.open("../memory_results.csv");
     memoryFile << "Size,Solution,MemoryDeltaBytes\n";
 
     Database masterDb;

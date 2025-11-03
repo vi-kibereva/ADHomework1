@@ -5,7 +5,7 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 
 try:
-    df = pd.read_csv("benchmark_results.csv")
+    df = pd.read_csv("../benchmark_results.csv")
 
     plt.figure(figsize=(10, 6))
 
@@ -38,6 +38,5 @@ try:
 
 except FileNotFoundError:
     print("Error: benchmark_results.csv not found.")
-    print("Please run your C++ benchmark program first to generate the file.")
 except Exception as e:
     print(f"An error occurred: {e}")

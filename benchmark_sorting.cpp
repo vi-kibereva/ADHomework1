@@ -11,10 +11,10 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
 
     std::vector<int> sizes = {100, 1000, 10000, 100000};
-    const std::string sourceFilename = "students.csv";
+    const std::string sourceFilename = "../students.csv";
 
     std::ofstream resultsFile;
-    resultsFile.open("sorting_results.csv");
+    resultsFile.open("../sorting_results.csv");
     resultsFile << "Size,SortType,TimeMilliseconds\n";
 
     std::cout << "Loading master database from: " << sourceFilename << std::endl;

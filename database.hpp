@@ -29,19 +29,23 @@ struct Database {
     std::vector<Student> students;
     std::vector<std::string> emails;
 
-    explicit Database(const std::string &filename = "students.csv");
+    explicit Database(const std::string &filename = "../students.csv");
 };
 
 class SolutionMap {
     std::unordered_map<std::string, Student> students;
+    std::unordered_map<std::string, int> groupCounts;
+    std::unordered_map<std::string, double> groupRatingsSum;
 
 public:
     explicit SolutionMap(Database &database);
-    std::string maxGroup();
-    void changeGroupByEmail(const std::string &email, const std::string &group);
-    std::string maxGradeGroup();
-};
 
+    std::string maxGroup();
+
+    std::string maxGradeGroup();
+
+    void changeGroupByEmail(const std::string &email, const std::string &newGroup);
+};
 class SolutionVector {
     std::vector<Student> students;
 public:

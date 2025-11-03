@@ -6,7 +6,7 @@ from matplotlib.ticker import ScalarFormatter
 sns.set_theme(style="whitegrid")
 
 try:
-    df = pd.read_csv("sorting_results.csv")
+    df = pd.read_csv("../sorting_results.csv")
     plt.figure(figsize=(10, 6))
 
     ax = sns.lineplot(
@@ -35,12 +35,11 @@ try:
     plt.legend(title='Sorting Algorithm')
     plt.grid(True, which="both", ls="--")
     plt.tight_layout()
-    plt.savefig("sorting_performance.png")
+    plt.savefig("../sorting_performance.png")
 
     print("Plot saved to sorting_performance.png")
 
 except FileNotFoundError:
     print("Error: sorting_results.csv not found.")
-    print("Please run your C++ sorting benchmark first to generate the file.")
 except Exception as e:
     print(f"An error occurred: {e}")

@@ -59,22 +59,23 @@ Database::Database(const std::string &filename) {
     }
 }
 
-
 SolutionMap::SolutionMap(Database &database) {
     for (const auto &student : database.students) {
         students.emplace(student.m_email, student);
+        groupCounts[student.m_group]++;
+        groupRatingsSum[student.m_group] += student.m_rating;
     }
 }
 
 std::string SolutionMap::maxGroup() {
-    std::unordered_map<std::string, int> groups;
-    for (const auto &pair : students) {
-        const Student &s = pair.second;
-        groups[s.m_group]++;
-    }
+    if (groupCounts.empty()) return {};
+
     int bestCount = -1;
     std::string bestGroup;
-    for (const auto &p : groups) {
+
+    // This loop is extremely fast: it iterates over GROUPS (e.g., 20),
+    // not STUDENTS (e.g., 100,000).
+    for (const auto &p : groupCounts) {
         const std::string &group = p.first;
         int cnt = p.second;
         if (cnt > bestCount || (cnt == bestCount && group < bestGroup)) {
@@ -85,37 +86,51 @@ std::string SolutionMap::maxGroup() {
     return bestGroup;
 }
 
-void SolutionMap::changeGroupByEmail(const std::string &email, const std::string &group) {
-    auto student = students.find(email);
-    if (student != students.end()) {
-        student->second.m_group = group;
-    } else {
-        throw std::invalid_argument("No student with such email");
-    }
-}
-
 std::string SolutionMap::maxGradeGroup() {
-    if (students.empty()) return {};
-    std::unordered_map<std::string, std::pair<double, int>> groups;
-    for (const auto &pair : students) {
-        const Student &s = pair.second;
-        groups[s.m_group].first += s.m_rating;
-        groups[s.m_group].second += 1;
-    }
+    if (groupCounts.empty()) return {};
+
     double bestAvg = -1.0;
     std::string bestGroup;
-    for (const auto &p : groups) {
+
+    for (const auto &p : groupCounts) {
         const std::string &group = p.first;
-        double sum = p.second.first;
-        int cnt = p.second.second;
+        int cnt = p.second;
+
         if (cnt == 0) continue;
+        double sum = groupRatingsSum[group];
         double avg = sum / cnt;
+
         if (avg > bestAvg || (avg == bestAvg && group < bestGroup)) {
             bestAvg = avg;
             bestGroup = group;
         }
     }
     return bestGroup;
+}
+
+void SolutionMap::changeGroupByEmail(const std::string &email, const std::string &newGroup) {
+    auto it = students.find(email);
+    if (it == students.end()) {
+        return;
+    }
+
+    Student& student = it->second;
+
+    std::string oldGroup = student.m_group;
+
+    if (oldGroup == newGroup) {
+        return;
+    }
+
+    float rating = student.m_rating;
+
+    groupCounts[oldGroup]--;
+    groupRatingsSum[oldGroup] -= rating;
+
+    groupCounts[newGroup]++;
+    groupRatingsSum[newGroup] += rating;
+
+    student.m_group = newGroup;
 }
 
 SolutionVector::SolutionVector(Database &database) {
