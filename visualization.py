@@ -5,7 +5,7 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 
 try:
-    df = pd.read_csv("../benchmark_results.csv")
+    df = pd.read_csv("benchmark_results.csv")
 
     plt.figure(figsize=(10, 6))
 

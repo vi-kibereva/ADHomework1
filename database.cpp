@@ -73,8 +73,7 @@ std::string SolutionMap::maxGroup() {
     int bestCount = -1;
     std::string bestGroup;
 
-    // This loop is extremely fast: it iterates over GROUPS (e.g., 20),
-    // not STUDENTS (e.g., 100,000).
+
     for (const auto &p : groupCounts) {
         const std::string &group = p.first;
         int cnt = p.second;
